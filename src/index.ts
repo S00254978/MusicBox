@@ -8,7 +8,7 @@ const mongouri = process.env.MONGODB_URI;
 
 async function startServer() {
     if (!mongouri) {
-        throw new Error("MONGODB_URL is not set");
+        throw new Error("MONGODB_URI is not set");
     }
 
     await mongoose.connect(mongouri);
