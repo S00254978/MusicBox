@@ -15,3 +15,9 @@ export const createReviewSchema = z.object({
 });
 
 export type CreateReviewInput = z.infer<typeof createReviewSchema>;
+
+export const updateReviewSchema = createReviewSchema.omit({
+    userId: true,
+})
+
+export type UpdateReviewInput = z.infer<typeof updateReviewSchema>;
