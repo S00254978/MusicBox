@@ -26,7 +26,7 @@ export const validateUpdateReview: RequestHandler = (req,res,next) =>{
 
     if (!result.success) {
         res.status(400).json({
-            message:"Invalid review datea",
+            message:"Invalid review data",
             errors: result.error.issues
 ,        });
 
