@@ -1,11 +1,24 @@
 import "dotenv/config";
-import express from "express";
+import app from "./app";
+import mongoose from "mongoose";
 
-const app = express();
-app.use(express.json());
-    
-app.get("/", (req, res) => {
-    res.send("Hello, world!");
-});
+const port = 3000;
+const mongouri = process.env.MONGODB_URI;
 
-app.listen(3000, () => console.log("Listening on http://localhost:3000"));
+
+async function startServer() {
+    if (!mongouri) {
+        throw new Error("MONGODB_URL is not set");
+    }
+
+    await mongoose.connect(mongouri);
+    console.log("connected to mongodb")
+    app.listen(port, () => {
+        console.log(`Listening on http://localhost:${port}`);
+    });
+
+    startServer().catch((error: unknown) => {
+        console.error("Failed to start server", error);
+        
+    });
+}
