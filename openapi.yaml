@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+title: Music Box Api
+description: API for managing music reviews and album reviews.
+version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+paths: {}
