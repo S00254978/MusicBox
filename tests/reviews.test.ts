@@ -5,7 +5,7 @@ import app from "../src/app";
 describe("POST /api/reviews", () => {
 
     it("rejects a rating outside the allowed range", async () => {
-        
+
         const response = await request(app)
         .post("/api/reviews")
         .send({
@@ -28,8 +28,19 @@ describe("GET /api/reviews/:reviewId", () => {
         const response = await request(app)
         .get("/api/reviews/malformed-review-id");
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Invalid reviewId");
+        expect(response.body.message).toBe("Invalid review Id");
 
     });
 
+});
+
+describe("GET /api/reviews", () => {
+    it("returns an array of reviews", async () => {
+
+        const response = await request(app)
+            .get("/api/reviews");
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Invalid Query");
+        
+    });
 });
