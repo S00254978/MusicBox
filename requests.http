@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3000/api: 
+@baseUrl = http://localhost:3000/api
 
 ###
 # @name CreateUser
@@ -8,4 +8,18 @@ Content-Type: application/json
 {
     "username":"johnMusic",
     "email": "johnMusic@example.com"
+}
+
+###
+# @name CreateReview
+
+POST {{baseUrl}}/reviews
+Content-Type: application/json
+
+{
+   "userId": "{{CreateUser.response.body.$._id}}",
+   "spotifyAlbumId": "test-album-001",
+   "rating": 5,
+   "text": "This album is amazing!",
+   "listenedAt": "2026-06-01T12:00:00Z"
 }
