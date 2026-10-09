@@ -1,0 +1,105 @@
+@baseUrl = http://localhost:3000/api
+
+###
+# @name CreateUser
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "username":"johnMusic",
+    "email": "johnMusic@example.com"
+}
+
+###
+# @name CreateReview
+
+POST {{baseUrl}}/reviews
+Content-Type: application/json
+
+{
+   "userId": "{{CreateUser.response.body.$._id}}",
+   "spotifyAlbumId": "test-album-001",
+   "rating": 5,
+   "text": "This album is amazing!",
+   "listenedAt": "2026-06-01T12:00:00Z"
+}
+
+###
+# @name CreateReviewInvalid
+POST {{baseUrl}}/reviews
+Content-Type: application/json
+
+{
+    "userId": "{{CreateUser.response.body.$._id}}",
+    "spotifyAlbumId":"test-album-001",
+    "rating":6,
+    "text":"Rating is out of range.",
+    "listenedAt":"2026-06-01T12:00:00Z"
+    }
+
+###
+# @name GetAllReviews
+GET {{baseUrl}}/reviews
+
+###
+# @name FilterReviewsByAlbum
+GET {{baseUrl}}/reviews?spotifyAlbumId=test-album-001
+
+###
+# @name GetReviewById
+GET {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
+
+###
+# @name GetReviewInvalidId
+GET {{baseUrl}}/reviews/not-an-object-id
+
+###
+# @name GetReviewNotFound
+GET {{baseUrl}}/reviews/000000000000000000000000
+
+###
+# @name UpdateReview
+PUT {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
+Content-Type: application/json
+
+{
+
+"spotifyAlbumId":"test-album-001",
+"rating":4,
+"text":"Updated review.",
+"listenedAt":"2026-06-02T12:00:00Z"
+
+}
+
+###
+# @name UpdateReviewNotFound
+PUT {{baseUrl}}/reviews/ffffffffffffffffffffffff
+Content-Type: application/json
+
+{
+
+    "spotifyAlbumId":"test-album-001",
+    "rating":4,
+    "text":"Review not found.",
+    "listenedAt":"2026-06-02T12:00:00Z"
+
+}
+
+###
+# @name UpdateReviewInvalid
+PUT {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
+Content-Type: application/json
+
+{
+    "spotifyAlbumId":"test-album-001",
+    "rating":6,
+    "text":"Rating is out of range.","listenedAt":"2026-06-02T12:00:00Z"
+}
+
+###
+# @name DeleteReviewNotFound
+DELETE {{baseUrl}}/reviews/000000000000000000000000
+
+###
+# @name DeleteReview
+DELETE {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
