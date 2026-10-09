@@ -30,7 +30,8 @@ POST {{baseUrl}}/reviews
 Content-Type: application/json
 
 {
-    "userId":"000000000000000000000000","spotifyAlbumId":"test-album-001",
+    "userId": "{{CreateUser.response.body.$._id}}",
+    "spotifyAlbumId":"test-album-001",
     "rating":6,
     "text":"Rating is out of range.",
     "listenedAt":"2026-06-01T12:00:00Z"
