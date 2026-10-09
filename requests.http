@@ -23,3 +23,15 @@ Content-Type: application/json
    "text": "This album is amazing!",
    "listenedAt": "2026-06-01T12:00:00Z"
 }
+
+###
+# @name GetAllReviews
+GET {{baseUrl}}/reviews
+
+###
+# @name FilterReviewsByAlbum
+GET {{baseUrl}}/reviews?spotifyAlbumId=test-album-001
+
+###
+# @name GetReviewById
+GET {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
