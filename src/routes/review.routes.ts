@@ -45,6 +45,31 @@ router.get("/", async (req, res, next) => {
 
 });
 
+router.get("/:reviewId", async (req, res, next) => {
+    try {
+        const reviewId = req.params.reviewId;
+
+        if (
+            typeof reviewId !== "string" ||
+            !/^[0-9a-fA-F]{24}$/.test(reviewId)
+        ) {
+            res.status(400).json({ message: "Invalid review ID" });
+            return;
+        }
+
+        const review = await ReviewModel.findById(reviewId);
+
+        if (!review) {
+            res.status(404).json({ message: "Review not found" });
+            return;
+        }
+
+        res.status(200).json(review);
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.put("/:reviewId", validateUpdateReview, async (req, res, next) => {
     try {
         const reviewId = req.params.reviewId;
