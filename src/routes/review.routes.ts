@@ -2,6 +2,7 @@ import {Router } from "express";
 import ReviewModel from "../models/review.model";
 import UserModel from "../models/user.model";
 import { validateCreateReview, validateUpdateReview } from "../middleware/validate";
+import { reviewQuerySchema } from "../schemas/review.schema";
 
 const router = Router();
 
@@ -34,24 +35,23 @@ router.get("/", async (_req, res, next) => {
     }
 });
 
-router.get("/:reviewId", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
-        if (!/^[0-9a-fA-F]{24}$/.test(req.params.reviewId)) {
-            res.status(400).json({ message: "Invalid review ID" });
+        const result = reviewQuerySchema.safeParse(req.query);
+        if (!result.success) {
+            res.status(400).json({
+                message: "Invalid query parameters",
+                errors: result.error.issues,
+            });
             return;
         }
 
-        const review = await ReviewModel.findById(req.params.reviewId);
-
-        if (!review) {
-            res.status(404).json({ message: "Review not found" });
-            return;
-        }
-
-        res.status(200).json(review);
+        const reviews = await ReviewModel.find(result.data).sort({createdAt: -1});
+        res.status(200).json(reviews);
     } catch (error) {
         next(error);
     }
+
 });
 
 router.put("/:reviewId", validateUpdateReview, async (req, res, next) => {
