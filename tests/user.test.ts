@@ -17,4 +17,17 @@ describe("POST /api/users", () => {
 
     });
 
-});
+    it("rejects a username shorter than 3 characters", async () => {
+
+            const response = await request(app)
+            .post("/api/users")
+            .send({
+                username: "jo",
+                email: "john@example.com",
+            });
+            expect(response.status).toBe(400);
+            expect(response.body.message).toBe("Invalid user data");
+
+        });
+
+    });
