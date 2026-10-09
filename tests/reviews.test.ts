@@ -1,6 +1,15 @@
-import {describe, expect,it} from "vitest";
+import {describe, expect,it, vi} from "vitest";
 import request from "supertest";
 import app from "../src/app";
+
+
+vi.mock("../src/models/review.model", () => ({
+    default: {
+        find: vi.fn(() => ({
+            sort: vi.fn().mockResolvedValue([]),
+        })),
+    },
+}));
 
 describe("POST /api/reviews", () => {
 
@@ -40,7 +49,7 @@ describe("GET /api/reviews", () => {
         const response = await request(app)
             .get("/api/reviews");
         expect(response.status).toBe(200);
-        expect(response.body.message).toBe("Invalid Query");
+        expect(response.body).toEqual([]);
 
     });
 });
