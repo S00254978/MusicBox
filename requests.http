@@ -25,6 +25,18 @@ Content-Type: application/json
 }
 
 ###
+# @name CreateReviewInvalid
+POST {{baseUrl}}/reviews
+Content-Type: application/json
+
+{
+    "userId":"000000000000000000000000","spotifyAlbumId":"test-album-001",
+    "rating":6,
+    "text":"Rating is out of range.",
+    "listenedAt":"2026-06-01T12:00:00Z"
+    }
+
+###
 # @name GetAllReviews
 GET {{baseUrl}}/reviews
 
@@ -49,21 +61,39 @@ GET {{baseUrl}}/reviews/000000000000000000000000
 PUT {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
 Content-Type: application/json
 
-{"spotifyAlbumId":"test-album-001","rating":4,"text":"Updated review.","listenedAt":"2026-06-02T12:00:00Z"}
+{
+
+"spotifyAlbumId":"test-album-001",
+"rating":4,
+"text":"Updated review.",
+"listenedAt":"2026-06-02T12:00:00Z"
+
+}
 
 ###
 # @name UpdateReviewNotFound
 PUT {{baseUrl}}/reviews/ffffffffffffffffffffffff
 Content-Type: application/json
 
-{"spotifyAlbumId":"test-album-001","rating":4,"text":"Review not found.","listenedAt":"2026-06-02T12:00:00Z"}
+{
+
+    "spotifyAlbumId":"test-album-001",
+    "rating":4,
+    "text":"Review not found.",
+    "listenedAt":"2026-06-02T12:00:00Z"
+
+}
 
 ###
 # @name UpdateReviewInvalid
 PUT {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
 Content-Type: application/json
 
-{"spotifyAlbumId":"test-album-001","rating":6,"text":"Rating is out of range.","listenedAt":"2026-06-02T12:00:00Z"}
+{
+    "spotifyAlbumId":"test-album-001",
+    "rating":6,
+    "text":"Rating is out of range.","listenedAt":"2026-06-02T12:00:00Z"
+}
 
 ###
 # @name DeleteReviewNotFound
