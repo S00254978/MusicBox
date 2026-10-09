@@ -1,10 +1,164 @@
 openapi: 3.1.0
 info:
-title: Music Box Api
-description: API for managing music reviews and album reviews.
-version: 1.0.0
+  title: Music Box API
+  description: API for users and music reviews.
+  version: 1.0.0
 servers:
-  - url: http://localhost:3000
-    description: Local development server
+  - url: http://localhost:3000/api
 
-paths: {}
+paths:
+  /users:
+    post:
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: User created
+        "400":
+          description: Invalid user data
+        "409":
+          description: Username or email already exists
+        "500":
+          description: Server error
+
+  /reviews:
+    post:
+      summary: Create a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Review created
+        "400":
+          description: Invalid review data
+        "404":
+          description: User not found
+        "500":
+          description: Server error
+    get:
+      summary: List reviews
+      parameters:
+        - name: spotifyAlbumId
+          in: query
+          schema:
+            type: string
+        - name: userId
+          in: query
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
+      responses:
+        "200":
+          description: Reviews returned
+        "400":
+          description: Invalid query
+        "500":
+          description: Server error
+
+  /reviews/{reviewId}:
+    parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^[0-9a-fA-F]{24}$"
+    get:
+      summary: Get one review
+      responses:
+        "200":
+          description: Review returned
+        "400":
+          description: Invalid review ID
+        "404":
+          description: Review not found
+    put:
+      summary: Update a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewUpdate"
+      responses:
+        "200":
+          description: Review updated
+        "400":
+          description: Invalid ID or review data
+        "404":
+          description: Review not found
+    delete:
+      summary: Delete a review
+      responses:
+        "204":
+          description: Review deleted
+        "400":
+          description: Invalid review ID
+        "404":
+          description: Review not found
+
+components:
+  schemas:
+    UserInput:
+      type: object
+      required: [username, email]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+        email:
+          type: string
+          format: email
+
+    ReviewInput:
+      type: object
+      required: [userId, spotifyAlbumId, rating, text, listenedAt]
+      properties:
+        userId:
+          type: string
+          pattern: "^[0-9a-fA-F]{24}$"
+        spotifyAlbumId:
+          type: string
+          minLength: 1
+          maxLength: 100
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        listenedAt:
+          type: string
+          format: date-time
+
+    ReviewUpdate:
+      type: object
+      required: [spotifyAlbumId, rating, text, listenedAt]
+      properties:
+        spotifyAlbumId:
+          type: string
+          minLength: 1
+          maxLength: 100
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        listenedAt:
+          type: string
+          format: date-time
