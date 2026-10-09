@@ -25,15 +25,6 @@ router.post("/", validateCreateReview,async (req, res, next)=>{
 
 });
 
-router.get("/", async (_req, res, next) => {
-    try{
-        const reviews = await ReviewModel.find().sort({createdAt: -1});
-        res.status(200).json(reviews);
-    }
-    catch (error){
-        next(error);
-    }
-});
 
 router.get("/", async (req, res, next) => {
     try {
