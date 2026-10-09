@@ -83,4 +83,29 @@ router.put("/:reviewId", validateUpdateReview, async (req, res, next) => {
     }
 });
 
+router.delete("/:reviewId", async (req, res, next) => {
+    try {
+        const reviewId = req.params.reviewId;
+        
+        if(
+            typeof reviewId !== "string" ||
+            !/^[0-9a-fA-F]{24}$/.test(reviewId)
+        ) {
+            res.status(400).json({ message: "Invalid review ID" });
+            return;
+        }
+
+    const deletedReview = await ReviewModel.findByIdAndDelete(reviewId);
+
+    if (!deletedReview) {
+        res.status(404).json({ message: "Review not found" });
+        return;
+    }
+
+   res.status(204).send();
+} catch (error) {
+    next(error);
+}
+});
+
 export default router;
