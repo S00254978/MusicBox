@@ -35,3 +35,11 @@ GET {{baseUrl}}/reviews?spotifyAlbumId=test-album-001
 ###
 # @name GetReviewById
 GET {{baseUrl}}/reviews/{{CreateReview.response.body.$._id}}
+
+###
+# @name GetReviewInvalidId
+GET {{baseUrl}}/reviews/not-an-object-id
+
+###
+# @name GetReviewNotFound
+GET {{baseUrl}}/reviews/000000000000000000000000
