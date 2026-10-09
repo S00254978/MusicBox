@@ -28,7 +28,7 @@ describe("GET /api/reviews/:reviewId", () => {
         const response = await request(app)
         .get("/api/reviews/malformed-review-id");
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Invalid review Id");
+        expect(response.body.message).toBe("Invalid review ID");
 
     });
 
@@ -41,6 +41,6 @@ describe("GET /api/reviews", () => {
             .get("/api/reviews");
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Invalid Query");
-        
+
     });
 });
