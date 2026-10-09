@@ -4,7 +4,8 @@ import app from "../src/app";
 
 describe("POST /api/reviews", () => {
 
-    it("rejects a rating outise the allowed range", async () => {
+    it("rejects a rating outside the allowed range", async () => {
+        
         const response = await request(app)
         .post("/api/reviews")
         .send({
@@ -16,6 +17,18 @@ describe("POST /api/reviews", () => {
         });
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Invalid review data");
+
+    });
+
+});
+
+describe("GET /api/reviews/:reviewId", () => {
+    it("returns 400 for a malformed reviewId", async () => {
+
+        const response = await request(app)
+        .get("/api/reviews/malformed-review-id");
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Invalid reviewId");
 
     });
 
