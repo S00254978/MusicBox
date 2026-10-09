@@ -14,6 +14,13 @@ export const createReviewSchema = z.object({
 
 });
 
+export const reviewQuerySchema = z.strictObject({
+
+    spotifyAlbumId: z.string().trim().min(1).max(100).optional(),
+    userId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Must be a valid user ID").optional(),
+
+});
+
 export type CreateReviewInput = z.infer<typeof createReviewSchema>;
 
 export const updateReviewSchema = createReviewSchema.omit({
